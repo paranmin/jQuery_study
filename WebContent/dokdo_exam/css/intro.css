@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+footer {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+}
+
+@media all and (max-width: 736px) {
+	#mobile-menu {
+		left: 15px;
+	}
+	section {
+		margin: 10px 0;
+	}
+	article.intro {
+		margin: 20px auto;
+		width: 100%;
+		text-align: center;
+	}
+	article.intro img {
+		width: 100%;
+	}
+}
+
+@media all and (min-width: 737px) {
+	section {
+		margin: 10px 0;
+		height: 500px;
+	}
+	article.intro {
+		margin: 20px auto;
+		width: 1024px;
+		text-align: center;
+	}
+}
