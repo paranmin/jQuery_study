@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CJ Mall</title>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+}
+#container {
+	width: 900px;
+	margin: 0 auto;
+}
+#prd_img {
+	width: 470px;
+	float: left;
+	overflow: hidden;
+	position: relative;
+}
+#show_prd_img {
+	height: 470px;
+	position: relative;
+	margin-bottom: 20px;
+}
+#show_prd_img > img {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+#prd_img .prd_slider {
+	margin-left:18px;
+	height: 80px;
+	list-style: none;
+}
+#prd_img .prd_slider li {
+	float: left;
+}
+#prd_img .prd_slider li > a > img {
+	width: 80px;
+	height: 80px;
+}
+#prev {
+	position: absolute;
+	left:0;
+	bottom: 35px;
+}
+#next {
+	position: absolute;
+	right:0;
+	bottom: 35px;
+}
+#prd_info {
+	width: 470px;
+	float: right;
+	overflow: hidden;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<script>
+$(function() {
+	var mySlider = $(".prd_slider").bxSlider({
+		mode: "horizontal",
+		pager: false,
+		slideWidth: 80,
+		moveSlides: 5,
+		maxSlides: 5,
+		minSlides: 5,
+		slideMargin: 10,
+		controls: false
+	});
+	$("#prev").on("click", function() {
+		mySlider.goToPrevSlide();
+		return false;
+	});
+	$("#next").on("click", function() {
+		mySlider.goToNextSlide();
+		return false;
+	});
+	
+	$(".prd_slider a > img").on("click", function() {
+		var path = $(this).attr("src");
+		$(".prd_slider a > img").css({border: "none"});
+		$(this).css({border: "1px solid #007bc8"});
+		$("#show_prd_img > img").attr("src", path);
+	});
+});
+</script>
+</head>
+<body>
+	<div id="container">
+		<div id="prd_img">
+			<div id="show_prd_img">
+				<img src="images/prd_main.jpg" alt="" />
+			</div>
+			<ul class="prd_slider">
+				<li><a href="#"><img src="images/prd_1.jpg" alt="" /></a></li>
+				<li><a href="#"><img src="images/prd_2.jpg" alt="" /></a></li>
+				<li><a href="#"><img src="images/prd_3.jpg" alt="" /></a></li>
+				<li><a href="#"><img src="images/prd_4.jpg" alt="" /></a></li>
+				<li><a href="#"><img src="images/prd_5.jpg" alt="" /></a></li>
+				<li><a href="#"><img src="images/prd_6.jpg" alt="" /></a></li>
+				<li><a href="#"><img src="images/prd_7.jpg" alt="" /></a></li>
+				<li><a href="#"><img src="images/prd_8.jpg" alt="" /></a></li>
+			</ul>
+			<a href="#" id="prev"><img src="images/left_btn.png" alt="" /></a>
+			<a href="#" id="next"><img src="images/right_btn.png" alt="" /></a>
+		</div>
+		<div id="prd_info">
+			
+		</div>
+	</div>
+</body>
+</html>
