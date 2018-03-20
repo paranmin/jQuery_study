@@ -31,8 +31,15 @@
 	right: 0;
 	margin: auto;
 }
+#slide_area {
+	width: 435px;
+	margin-left: 18px;
+	overflow: hidden;
+}
 #prd_img .prd_slider {
-	margin-left:18px;
+	width: 435px;
+	margin: 0;
+	padding: 0;
 	height: 80px;
 	list-style: none;
 }
@@ -43,15 +50,18 @@
 	width: 80px;
 	height: 80px;
 }
+.bx-wrapper {
+	width: 435px;
+}
 #prev {
 	position: absolute;
 	left:0;
-	bottom: 35px;
+	bottom: 30px;
 }
 #next {
 	position: absolute;
 	right:0;
-	bottom: 35px;
+	bottom: 30px;
 }
 #prd_info {
 	width: 470px;
@@ -112,11 +122,11 @@ $(function() {
 	var mySlider = $(".prd_slider").bxSlider({
 		mode: "horizontal",
 		pager: false,
-		slideWidth: 80,
+		slideWidth: 90,
 		moveSlides: 5,
 		maxSlides: 5,
 		minSlides: 5,
-		slideMargin: 10,
+		slideMargin: 5,
 		controls: false
 	});
 	$("#prev").on("click", function() {
@@ -143,18 +153,20 @@ $(function() {
 			<div id="show_prd_img">
 				<img src="images/prd_main.jpg" alt="" />
 			</div>
-			<ul class="prd_slider">
-				<li><a href="#"><img src="images/prd_1.jpg" alt="" /></a></li>
-				<li><a href="#"><img src="images/prd_2.jpg" alt="" /></a></li>
-				<li><a href="#"><img src="images/prd_3.jpg" alt="" /></a></li>
-				<li><a href="#"><img src="images/prd_4.jpg" alt="" /></a></li>
-				<li><a href="#"><img src="images/prd_5.jpg" alt="" /></a></li>
-				<li><a href="#"><img src="images/prd_6.jpg" alt="" /></a></li>
-				<li><a href="#"><img src="images/prd_7.jpg" alt="" /></a></li>
-				<li><a href="#"><img src="images/prd_8.jpg" alt="" /></a></li>
-			</ul>
-			<a href="#" id="prev"><img src="images/left_btn.png" alt="" /></a>
-			<a href="#" id="next"><img src="images/right_btn.png" alt="" /></a>
+			<div id="slide_area">
+				<ul class="prd_slider">
+					<li><a href="#"><img src="images/prd_1.jpg" alt="" /></a></li>
+					<li><a href="#"><img src="images/prd_2.jpg" alt="" /></a></li>
+					<li><a href="#"><img src="images/prd_3.jpg" alt="" /></a></li>
+					<li><a href="#"><img src="images/prd_4.jpg" alt="" /></a></li>
+					<li><a href="#"><img src="images/prd_5.jpg" alt="" /></a></li>
+					<li><a href="#"><img src="images/prd_6.jpg" alt="" /></a></li>
+					<li><a href="#"><img src="images/prd_7.jpg" alt="" /></a></li>
+					<li><a href="#"><img src="images/prd_8.jpg" alt="" /></a></li>
+				</ul>
+				<a href="#" id="prev"><img src="images/left_btn.png" alt="" /></a>
+				<a href="#" id="next"><img src="images/right_btn.png" alt="" /></a>
+			</div>
 		</div>
 		<div id="prd_info">
 			<p class="totalSell">3,196구매</p>
