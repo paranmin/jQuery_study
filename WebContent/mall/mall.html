@@ -3,118 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>CJ Mall</title>
-<style>
-* {
-	margin: 0;
-	padding: 0;
-}
-#container {
-	width: 980px;
-	margin: 20px auto;
-}
-#prd_img {
-	width: 470px;
-	float: left;
-	overflow: hidden;
-	position: relative;
-}
-#show_prd_img {
-	height: 470px;
-	position: relative;
-	margin-bottom: 20px;
-}
-#show_prd_img > img {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	margin: auto;
-}
-#slide_area {
-	width: 435px;
-	margin-left: 18px;
-	overflow: hidden;
-}
-#prd_img .prd_slider {
-	width: 435px;
-	margin: 0;
-	padding: 0;
-	height: 80px;
-	list-style: none;
-}
-#prd_img .prd_slider li {
-	float: left;
-}
-#prd_img .prd_slider li > a > img {
-	width: 80px;
-	height: 80px;
-}
-.bx-wrapper {
-	width: 435px;
-}
-#prev {
-	position: absolute;
-	left:0;
-	bottom: 30px;
-}
-#next {
-	position: absolute;
-	right:0;
-	bottom: 30px;
-}
-#prd_info {
-	width: 470px;
-	float: right;
-	overflow: hidden;
-}
-#prd_info .totalSell {
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #eee;
-	height: 50px;
-	line-height: 50px;
-	text-align: right;
-	color: #666;
-}
-#prd_info h3 {
-	color: #666;
-	font-size: 1.1em;
-	margin-top: 15px;
-}
-#prd_info .prd_price {
-	margin: 30px 0;
-	position: relative;
-}
-#prd_info .discount_per {
-	font-size: 1.5em;
-	color: #da006b;
-	margin-right: 20px;
-}
-#prd_info .discount_per .per {
-	font-size: 2em;
-}
-#prd_info .discount_price {
-	font-size: 1.5em;
-}
-#prd_info .discount_price .price {
-	font-size: 2em;
-}
-#prd_info .del_price {
-	font-size: 1.1em;
-	color: #aaa;
-	text-decoration: line-through;
-	position: absolute;
-	left: 100px;
-	bottom: -25px;
-}
-#prd_info .del_price .price {
-	font-size: 1.5em;
-}
-#prd_info .point_img {
-	margin-top: 30px;
-}
-</style>
-
+<link rel="stylesheet" href="css/mall.css" media="all" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <script>
@@ -143,6 +32,33 @@ $(function() {
 		$(".prd_slider a > img").css({border: "none"});
 		$(this).css({border: "1px solid #007bc8"});
 		$("#show_prd_img > img").attr("src", path);
+	});
+	
+	$(".slt_prd").on("click", function() {
+		var $detail = $(this).next();
+		if($detail.css("display") != "none") {
+			$(this).css({"border-color": "#ccc"});
+			$(this).find("img").attr("src", "images/down.png");
+			$detail.hide();
+		} else {
+			$(this).css({"border-color": "#666"});
+			$(this).find("img").attr("src", "images/up.png");
+			var size = $detail.find("li").length,
+				chk_height = parseInt($detail.find("li img").css("height")),
+				scroll_area_height = chk_height * 4 + (chk_height / 2);
+			if (size > 4) {
+				$detail.css({"height": scroll_area_height+"px", "overflow-y": "scroll"});
+			}
+			$detail.show();
+		}
+	});
+	$(".slt_prd_detail li").on("click", function() {
+		var prd_name = $(this).find("p").text();
+		$(this).parent().prev().find(".msg").text(prd_name);
+		$(this).parent().prev().find("img").attr("src", "images/down.png");
+		$(this).parent().prev().css({"border-color": "#ccc"});
+		$(this).parent().hide();
+		$(".slt_size").show();
 	});
 });
 </script>
@@ -174,7 +90,7 @@ $(function() {
 			<div class="prd_price">
 				<span class="discount_per"><span class="per">50</span>%</span>
 				<span class="discount_price"><span class="price">63,990</span>원~</span> 
-				<span class="del_price"><span class="price">129.000</span>원~</span>
+				<span class="del_price"><span class="price">129,000</span>원~</span>
 			</div>
 			<img src="images/cjmall_point.png" usemap="cjmall_point" class="point_img" />
 			<map name="cjmall_point">
@@ -182,12 +98,22 @@ $(function() {
 				<area shape="rect" coords="240,3,472,39" href="http://display.cjmall.com/p/homeTab/main?hmtabMenuId=000008" alt="" />
 			</map>
 			<div class="slt_prd">
-				<a href="#">상품을 선택하세요.</a><span class="arrow"><img src="images/down.png" alt="" /></span>
+				<a href="#"><span class="msg">상품을 선택하세요.</span><span class="arrow"><img src="images/down.png" alt="" /></span></a>
 			</div>
-			<ul class="slt_lists">
-				<li><img src="images/prd_2.jpg" alt="" /><div class="prd_detail"><p>선택1) 여성 우먼스 나이키 에어맥스 테아 NIKE 599409-020</p><span>63,990원</span><span>쿠폰20%</span></div></li>
-				<li><img src="images/prd_2.jpg" alt="" /><div class="prd_detail"><p>선택1) 여성 우먼스 나이키 에어맥스 테아 NIKE 599409-020</p><span>63,990원</span><span>쿠폰20%</span></div></li>
-				<li><img src="images/prd_2.jpg" alt="" /><div class="prd_detail"><p>선택1) 여성 우먼스 나이키 에어맥스 테아 NIKE 599409-020</p><span>63,990원</span><span>쿠폰20%</span></div></li>
+			<ul class="slt_prd_detail">
+				<li><img src="images/prd_2.jpg" alt="" /><div class="prd_detail"><p>선택1) 여성 우먼스 나이키 에어맥스 테아 NIKE 599409-020</p><span class="price">63,990원</span> | <span class="coupon">쿠폰20%</span></div></li>
+				<li><img src="images/prd_3.jpg" alt="" /><div class="prd_detail"><p>선택2) 여성 우먼스 나이키 에어맥스 테아 NIKE 599409-020</p><span class="price">63,990원</span> | <span class="coupon">쿠폰20%</span></div></li>
+				<li><img src="images/prd_4.jpg" alt="" /><div class="prd_detail"><p>선택3) 여성 우먼스 나이키 에어맥스 테아 NIKE 599409-020</p><span class="price">63,990원</span> | <span class="coupon">쿠폰20%</span></div></li>
+				<li><img src="images/prd_5.jpg" alt="" /><div class="prd_detail"><p>선택4) 여성 우먼스 나이키 에어맥스 테아 NIKE 599409-020</p><span class="price">63,990원</span> | <span class="coupon">쿠폰20%</span></div></li>
+				<li><img src="images/prd_6.jpg" alt="" /><div class="prd_detail"><p>선택5) 여성 우먼스 나이키 에어맥스 테아 NIKE 599409-020</p><span class="price">63,990원</span> | <span class="coupon">쿠폰20%</span></div></li>
+			</ul>
+			<div class="slt_prd slt_size">
+				<a href="#"><span class="msg">사이즈</span><span class="arrow"><img src="images/down.png" alt="" /></span></a>
+			</div>
+			<ul class="slt_prd_detail">
+				<li><img src="images/prd_2.jpg" alt="" /><div class="prd_detail"><p>선택1) 여성 우먼스 나이키 에어맥스 테아 NIKE 599409-020</p><span class="price">63,990원</span> | <span class="coupon">쿠폰20%</span></div></li>
+				<li><img src="images/prd_2.jpg" alt="" /><div class="prd_detail"><p>선택1) 여성 우먼스 나이키 에어맥스 테아 NIKE 599409-020</p><span class="price">63,990원</span> | <span class="coupon">쿠폰20%</span></div></li>
+				<li><img src="images/prd_2.jpg" alt="" /><div class="prd_detail"><p>선택1) 여성 우먼스 나이키 에어맥스 테아 NIKE 599409-020</p><span class="price">63,990원</span> | <span class="coupon">쿠폰20%</span></div></li>
 			</ul>
 		</div>
 	</div>
