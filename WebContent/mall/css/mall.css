@@ -71,7 +71,7 @@ ul {
 #prd_info {
 	width: 470px;
 	float: right;
-	overflow: hidden;
+	position: relative;
 }
 #prd_info .totalSell {
 	border-top: 1px solid #ccc;
@@ -132,6 +132,13 @@ ul {
 	margin-left: 10px;
 	font-size: 0.9em;
 }
+.slt_prd a .msg {
+	width: 400px;
+	overflow: hidden;
+	display: inline-block;
+	text-overflow: clip;
+	white-space: nowrap;
+}
 .slt_prd span.arrow {
 	display: inline-block;
 	float: right;
@@ -139,11 +146,13 @@ ul {
 }
 .slt_prd_detail {
 	width: 450px;
-	margin: 0 auto;
 	border: 1px solid #333;;
 	border-top: none;
 	display: none;
 	overflow: hidden;
+	position: absolute;
+	left:9px;
+	background-color: #fff;
 }
 .slt_size {
 	display: none;
