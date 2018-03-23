@@ -34,11 +34,29 @@ $(function() {
 		$("#show_prd_img > img").attr("src", path);
 	});
 	
-	$(".slt_prd").on("click", function() {
+	$("#slt_prd").on("click", function() {
 		var $detail = $(this).next();
-		if ($(".slt_size").next().css("display") != "none") {
-			$(".slt_size").next().css("display", "none");
+		if ($("#slt_size").next().css("display") != "none") {
+			$("#slt_size").next().css("display", "none");
 		}
+		if($detail.css("display") != "none") {
+			$(this).css({"border-color": "#ccc"});
+			$(this).find("img").attr("src", "images/down.png");
+			$detail.hide();
+		} else {
+			$(this).css({"border-color": "#666"});
+			$(this).find("img").attr("src", "images/up.png");
+			var size = $detail.find("li").length,
+				chk_height = parseInt($detail.find("li img").css("height")),
+				scroll_area_height = chk_height * 4 + (chk_height / 2);
+			if (size > 4) {
+				$detail.css({"height": scroll_area_height+"px", "overflow-y": "scroll"});
+			}
+			$detail.show();
+		}
+	});
+	$("#slt_size").on("click", function() {
+		var $detail = $(this).next();
 		if($detail.css("display") != "none") {
 			$(this).css({"border-color": "#ccc"});
 			$(this).find("img").attr("src", "images/down.png");
@@ -62,22 +80,54 @@ $(function() {
 		$(this).parent().prev().find("img").attr("src", "images/down.png");
 		$(this).parent().prev().css({"border-color": "#ccc"});
 		$(this).parent().hide();
-		$(".slt_size").next().find(".price").text(price);
-		$(".slt_size").show();
+		$("#slt_size").next().find(".price").text(price);
+		$("#slt_size").show();
 	});
 	$("#slt_size_detail li").on("click", function() {
-		var prd_name = $(this).find("p").text();
-		$(this).parent().prev().find(".msg").text(prd_name);
+		var prd_size = $(this).find("p").text(),
+			price = $(this).find(".price").text(),
+			prd_name = $("#slt_prd").find(".msg").text();
+		
+		$(this).parent().prev().find(".msg").text(prd_size);
 		$(this).parent().prev().find("img").attr("src", "images/down.png");
 		$(this).parent().prev().css({"border-color": "#ccc"});
 		$(this).parent().hide();
 
-		$(".slt_prd").find(".msg").text("상품을 선택하세요.");
-		$(".slt_size").find(".msg").text("사이즈");
-		$(".slt_size").next().hide();
-		$(".slt_size").hide();
+		$("#slt_prd").find(".msg").text("상품을 선택하세요.");
+		$("#slt_size").find(".msg").text("사이즈");
+		$("#slt_size").next().hide();
+		$("#slt_size").hide();
+		
+		var append_item = '<div class="item">';
+		append_item += '<p class="title">'+ prd_name +' | '+ prd_size +' <span class="del_item">X</span></p>';
+		append_item += '<p><button class="sub">-</button><input type="text" name="quantity" value="1" /><button class="add">+</button> <span class="price"><span>'+price+'</span>원</span></p>';
+		append_item += '</div>';
+		
+		$(".selected_item").append(append_item);
+		
+		if ($(".selected_item").css("display") == "none") {
+			$(".selected_item").show();
+		}
+		
+		if ($(".total").css("display") == "none") {
+			$(".total").data("totalPrice", price);
+			$(".total").append("<p><span class=\"price\">"+price+"</span>원</p>")
+			$(".total").show();
+		} else {
+			var total = $(".total .price").text(),
+				total_price = parseInt(total.replace(",","")) + parseInt(price.replace(",",""));
+			$(".total").data("totalPrice", total_price);
+			$(".total .price").text(numberWithCommas(total_price));
+		}
+	});
+	
+	$(document).on("click", ".selected_item .item .del_item", function() {
+		$(this).parent().parent().remove();
 	});
 });
+function numberWithCommas(x) {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 </script>
 </head>
 <body>
@@ -114,17 +164,17 @@ $(function() {
 				<area shape="rect" coords="1,3,243,39" href="http://display.cjmall.com/p/exhibition/exhibitionDetail?plnExhbId=201705190275" alt="" />
 				<area shape="rect" coords="240,3,472,39" href="http://display.cjmall.com/p/homeTab/main?hmtabMenuId=000008" alt="" />
 			</map>
-			<div class="slt_prd" data-price="">
+			<div class="slt_prd" id="slt_prd" data-price="">
 				<a href="#"><span class="msg">상품을 선택하세요.</span><span class="arrow"><img src="images/down.png" alt="" /></span></a>
 			</div>
 			<ul class="slt_prd_detail" id="slt_prd_detail">
-				<li><img src="images/prd_2.jpg" alt="" /><div class="prd_detail"><p>선택1) 남성 나이키 에어맥스 어드밴티지 NIKE 908981-001</p><span class="price">56,960</span>원 | <span class="coupon">쿠폰20%</span></div></li>
-				<li><img src="images/prd_3.jpg" alt="" /><div class="prd_detail"><p>선택2) 여성 우먼스 나이키 에어맥스 어드밴티지 NIKE 908991-001</p><span class="price">61,260</span>원 | <span class="coupon">쿠폰20%</span></div></li>
-				<li><img src="images/prd_4.jpg" alt="" /><div class="prd_detail"><p>선택3) 남성 나이키 에어맥스 어드밴티지 NIKE 908981-400</p><span class="price">49,840</span>원 | <span class="coupon">쿠폰20%</span></div></li>
-				<li><img src="images/prd_5.jpg" alt="" /><div class="prd_detail"><p>선택4) 여성 우먼스 나이키 에어맥스 인비고 NIKE 599409-020</p><span class="price">69,390</span>원 | <span class="coupon">쿠폰20%</span></div></li>
-				<li><img src="images/prd_6.jpg" alt="" /><div class="prd_detail"><p>선택5) 여성 우먼스 나이키 에어맥스 비전 NIKE 532623-010</p><span class="price">50,330</span>원 | <span class="coupon">쿠폰20%</span></div></li>
+				<li><img src="images/prd_2.jpg" alt="" /><div class="prd_detail"><p>선택1) 남성 나이키 에어맥스 어드밴티지 NIKE 9081-001</p><span class="price">56,960</span>원 | <span class="coupon">쿠폰20%</span></div></li>
+				<li><img src="images/prd_3.jpg" alt="" /><div class="prd_detail"><p>선택2) 여성 우먼스 나이키 에어맥스 어드밴티지 NIKE 9091-001</p><span class="price">61,260</span>원 | <span class="coupon">쿠폰20%</span></div></li>
+				<li><img src="images/prd_4.jpg" alt="" /><div class="prd_detail"><p>선택3) 남성 나이키 에어맥스 어드밴티지 NIKE 9081-400</p><span class="price">49,840</span>원 | <span class="coupon">쿠폰20%</span></div></li>
+				<li><img src="images/prd_5.jpg" alt="" /><div class="prd_detail"><p>선택4) 여성 우먼스 나이키 에어맥스 인비고 NIKE 5909-020</p><span class="price">69,390</span>원 | <span class="coupon">쿠폰20%</span></div></li>
+				<li><img src="images/prd_6.jpg" alt="" /><div class="prd_detail"><p>선택5) 여성 우먼스 나이키 에어맥스 비전 NIKE 5323-010</p><span class="price">50,330</span>원 | <span class="coupon">쿠폰20%</span></div></li>
 			</ul>
-			<div class="slt_prd slt_size">
+			<div class="slt_prd" id="slt_size">
 				<a href="#"><span class="msg">사이즈</span><span class="arrow"><img src="images/down.png" alt="" /></span></a>
 			</div>
 			<ul class="slt_prd_detail"  id="slt_size_detail">
@@ -133,6 +183,8 @@ $(function() {
 				<li><div class="prd_detail"><p>240</p><span class="price">0</span>원 | 남은 수량<span class="stock">74</span>개</div></li>
 				<li><div class="prd_detail"><p>250</p><span class="price">0</span>원 | 남은 수량<span class="stock">42</span>개</div></li>
 			</ul>
+			<div class="selected_item"></div>
+			<div class="total" data-totalPrice=""></div>
 		</div>
 	</div>
 </body>
