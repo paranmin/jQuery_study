@@ -100,7 +100,7 @@ $(function() {
 		
 		var append_item = '<div class="item">';
 		append_item += '<p class="title">'+ prd_name +' | '+ prd_size +' <span class="del_item">X</span></p>';
-		append_item += '<p><button class="sub">-</button><input type="text" name="quantity" value="1" /><button class="add">+</button> <span class="price"><span>'+price+'</span>원</span></p>';
+		append_item += '<p><button class="sub">-</button><input type="text" name="quantity" value="1" /><button class="add">+</button> <span class="price" data-price="'+price.replace(",","")+'"><span>'+price+'</span>원</span></p>';
 		append_item += '</div>';
 		
 		$(".selected_item").append(append_item);
@@ -110,19 +110,82 @@ $(function() {
 		}
 		
 		if ($(".total").css("display") == "none") {
-			$(".total").data("totalPrice", price);
-			$(".total").append("<p><span class=\"price\">"+price+"</span>원</p>")
+			$(".total").append("<p>총<span class=\"price\">"+price+"</span>원</p>")
 			$(".total").show();
+			$(".total").data("totalprice", price.replace(",", ""));
 		} else {
 			var total = $(".total .price").text(),
 				total_price = parseInt(total.replace(",","")) + parseInt(price.replace(",",""));
-			$(".total").data("totalPrice", total_price);
+			$(".total").data("totalprice", total_price);
 			$(".total .price").text(numberWithCommas(total_price));
 		}
 	});
 	
+	$(document).on("click", ".selected_item .item .sub", function() {
+		var price = $(this).parent().find(".price > span").text().replace(/(,)/g,""),
+			unit_cost = $(this).parent().find(".price").data("price"),
+			total_price = $(".total").data("totalprice"),
+			quantity = $(this).parent().find("input[name='quantity']").val();
+
+		if (quantity == 1) {
+			return;
+		} else {
+			$(this).parent().find("input[name='quantity']").val(--quantity);
+		}
+		price = parseInt(price) - parseInt(unit_cost);
+		total_price = parseInt(total_price) - parseInt(unit_cost);
+		
+		$(this).parent().find(".price > span").text(numberWithCommas(price));
+		$(".total").data("totalprice", total_price);
+		$(".total .price").text(numberWithCommas(total_price));
+	});
+	$(document).on("click", ".selected_item .item .add", function() {
+		var price = $(this).parent().find(".price > span").text().replace(/(,)/g,""),
+			unit_cost = $(this).parent().find(".price").data("price"),
+			total_price = $(".total").data("totalprice"),
+			quantity = $(this).parent().find("input[name='quantity']").val();
+		
+		$(this).parent().find("input[name='quantity']").val(++quantity);
+		
+		price = parseInt(price) + parseInt(unit_cost);
+		total_price = parseInt(total_price) + parseInt(unit_cost);
+
+		$(this).parent().find(".price > span").text(numberWithCommas(price));
+		$(".total").data("totalprice", total_price);
+		$(".total .price").text(numberWithCommas(total_price));
+	});
 	$(document).on("click", ".selected_item .item .del_item", function() {
+		var price = $(this).parent().next().find(".price > span").text(),
+			total_price = $(".total").data("totalprice");
+
+		total_price = parseInt(total_price) - parseInt(price.replace(/(,)/g, ""));
+
+		$(".total").data("totalprice", total_price);
+		$(".total .price").text(numberWithCommas(total_price));
 		$(this).parent().parent().remove();
+		if ($(".total").css("display") != "none" && $(".selected_item .item").length == 0) {
+			$(".total").empty().hide();
+		}
+	});
+	$(document).on("keyup", "input[name='quantity']", function() {
+		var value = this.value,
+			unit_cost = $(this).parent().find(".price").data("price"),
+			price = $(this).parent().find(".price > span").text().replace(/(,)/g, ""),
+			total_price = $(".total").data("totalprice");
+
+		if (value == "" || isNaN(value)) {
+			value = 1;
+			this.value = value;
+			return;
+		}
+		
+		total_price = parseInt(total_price) - parseInt(price);
+		price = parseInt(unit_cost) * parseInt(value);
+		total_price += price;
+		
+		$(this).parent().find(".price > span").text(numberWithCommas(price));
+		$(".total").data("totalprice", total_price);
+		$(".total .price").text(numberWithCommas(total_price));
 	});
 });
 function numberWithCommas(x) {
@@ -184,7 +247,7 @@ function numberWithCommas(x) {
 				<li><div class="prd_detail"><p>250</p><span class="price">0</span>원 | 남은 수량<span class="stock">42</span>개</div></li>
 			</ul>
 			<div class="selected_item"></div>
-			<div class="total" data-totalPrice=""></div>
+			<div class="total" data-totalprice=""></div>
 		</div>
 	</div>
 </body>
